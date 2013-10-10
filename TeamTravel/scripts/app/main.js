@@ -312,6 +312,7 @@ var app = (function () {
         var init = function () {
             validator = $('#enterStatus').kendoValidator().data("kendoValidator");
             $newStatus = $('#newStatus');
+            //startWatchingGeolocation();
         };
         var show = function () {
             $newStatus.val('');
