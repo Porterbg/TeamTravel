@@ -18,7 +18,7 @@ var route = (function (e) {
             cities[0]=startCity;
             cities.push(endCity);
             console.log(cities);
-            app.viewModels.addActivity.addRoute(cities);
+            addActivity.addRoute(cities);
             app.mobileApp.navigate('#:back');
                
         };

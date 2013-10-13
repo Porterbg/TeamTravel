@@ -18,11 +18,15 @@
 <script type="text/x-kendo-template" id="activityTemplate">
     <div data-role="touch" data-bind="events: { tap: activitySelected }">
         <div class="user-info">
-            <h2>${User().DisplayName}</h2>
-            <time class="timeSpan">${CreatedAtFormatted()}</time>
+            <img data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png" class="pullImage"/>
+            <h2 id="personName" data-bind='text: User().DisplayName'></h2>
+            <time id="activityDate" data-bind="text: CreatedAtFormatted"></time>
         </div>
         <div class="user-share">
-            <a class="user-share-txt">${Text}</a>
+            <time class="timeSpan">Scheduled for: ${ScheduleDateFormatted()}</time>
+            <p class="user-share-txt">From: ${StartCity}</p>
+            <p class="user-share-txt">To: ${EndCity}</p>
+            <p class="user-share-txt">Description: ${Text}</p>
         </div>
     </div>
 </script>

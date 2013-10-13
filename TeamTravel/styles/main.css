@@ -429,7 +429,6 @@ textarea
 }
 .user-info
 {
-    padding: 1rem;
     border-bottom: 1px solid #ccc;   
     line-height: 1.1 !important;
     background-color: #fff;
@@ -446,6 +445,7 @@ textarea
 }
 .user-info h2
 {
+    padding: 1rem !important;
     margin: 0;
     padding: 0;
     font-size: 1.3rem;
@@ -453,7 +453,8 @@ textarea
 }
 .user-info h2 a
 {
-    color: #000 !important;   
+    color: #000 !important;
+    padding-bottom: 1rem !important;
 }
 .user-info img
 {
@@ -627,6 +628,14 @@ background-color: #A36A57;
 {
     font-size: 1.4em;
 } 
+.pullImage 
+{
+    width: 64px;
+    height: 64px;
+    border-radius: 3px;
+    float: left;
+    margin-right: 10px;
+}
 .city-input
 {
     width: 100px!important;

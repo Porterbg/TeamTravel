@@ -242,10 +242,17 @@ var app = (function () {
                 ScheduleDate: {
                     field: 'ScheduleDate',
                     defaultValue: new Date()
+                },
+                JoinedUsers: {
+                    field: 'JoinedUsers',
+                    defaultValue: []
                 }
             },
             CreatedAtFormatted: function () {
                 return AppHelper.formatDate(this.get('CreatedAt'));
+            },
+            ScheduleDateFormatted: function () {
+                return AppHelper.formatDate(this.get('ScheduleDate'));
             },
             PictureUrl: function () {
                 return AppHelper.resolvePictureUrl(this.get('Picture'));
@@ -281,7 +288,7 @@ var app = (function () {
                     $('#no-activities-span').show();
                 }
             },
-            sort: { field: 'CreatedAt', dir: 'desc' }
+            sort: { field: 'ScheduleDate', dir: 'asc' }
         });
         return {
             activities: activitiesDataSource
@@ -316,59 +323,8 @@ var app = (function () {
             show: function (e) {
                 var activity = activitiesModel.activities.getByUid(e.view.params.uid);
                 kendo.bind(e.view.element, activity, kendo.mobile.ui);
+                initializeRoute();
             }
-        };
-    }());
-
-    // add activity view model
-    var addActivityViewModel = (function () {
-        var $newStatus;
-        var $newScheduleDate;
-        var validator;
-        var newRoute;
-        var setRoute = function () {
-            mobileApp.navigate('views/routeMapView.html');
-        };
-        var init = function () {
-            validator = $('#enterStatus').kendoValidator().data("kendoValidator");
-            $newStatus = $('#newStatus');
-            $newScheduleDate = $("#datetimepicker").kendoDateTimePicker({
-                    value:new Date()
-                });
-            
-            newRoute = kendo.observable({ StartCity: null, EndCity: null });
-            //startWatchingGeolocation();
-        };
-        var show = function () {
-            console.log(newRoute);
-            validator.hideMessages();
-        };
-        var saveActivity = function () {
-            if (validator.validate()) {
-                var activities = activitiesModel.activities;
-                var activity = activities.add();
-                activity.Text = $newStatus.val();
-                activity.UserId = usersModel.currentUser.get('data').Id;
-                activity.StartCity = newRoute.StartCity;
-                activity.EndCity = newRoute.EndCity;
-                activity.ScheduleDate = $newScheduleDate.value();
-                activities.one('sync', function () {
-                    mobileApp.navigate('#:back');
-                });
-                activities.sync();
-            }
-        };
-        var addRoute = function(cities) {
-            newRoute.StartCity = cities[0];
-            newRoute.EndCity = cities[cities.length-1];
-        };
-        return {
-            init: init,
-            show: show,
-            me: usersModel.currentUser,
-            setRoute: setRoute,
-            saveActivity: saveActivity,
-            addRoute: addRoute
         };
     }());
 
@@ -378,7 +334,7 @@ var app = (function () {
             signup: singupViewModel,
             activities: activitiesViewModel,
             activity: activityViewModel,
-            addActivity: addActivityViewModel
+            usersModel: usersModel
         },
         mobileApp: mobileApp
     };

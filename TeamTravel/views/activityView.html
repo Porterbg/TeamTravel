@@ -1,3 +1,39 @@
+<script>
+    var directionsDisplay;
+    var directionsService = new google.maps.DirectionsService();
+    var map;
+    var startCity;
+    var endCity;
+
+    function initializeRoute() {
+      directionsDisplay = new google.maps.DirectionsRenderer();
+      var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+      var mapOptions = {
+        zoom:7,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        center: chicago
+      }
+      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+      directionsDisplay.setMap(map);
+      calcRoute();
+    };
+
+    function calcRoute() {
+      startCity = document.getElementById('start').innerText;
+      endCity = document.getElementById('end').innerText;
+      var request = {
+          origin:startCity,
+          destination:endCity,
+          travelMode: google.maps.DirectionsTravelMode.DRIVING
+      };
+      directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+          directionsDisplay.setDirections(response);
+        }
+      });
+    };
+</script>
+
 <div data-role="view" id="single-activity" data-layout="default" class="activities-view" data-show="app.viewModels.activity.show">
     <header data-role="header">
         <div data-role="navbar">
@@ -8,13 +44,17 @@
 
     <div id="status-container" class="user-status-wrp" data-role="listview" data-style="inset">
         <div class="user-info">
-            <img data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png" />
+            <img data-bind="attr:{src: User().PictureUrl}" alt="styles/images/avatar.png"/>
             <h2 id="personName" data-bind='text: User().DisplayName'></h2>
             <time id="activityDate" data-bind="text: CreatedAtFormatted"></time>
         </div>
         <img id="picture" data-bind="attr:{src: PictureUrl()}" width="100%"/>
         <div class="user-share">
-            <span id="activityText" data-bind="text: Text" class="user-share-txt"></span>
+            <p>Scheduled time<time class="timeSpan" data-bind="text: ScheduleDateFormatted()"></time></p>
+            <p>Start: <spam id="start" data-bind="text: StartCity" class="user-share-txt"></spam></p>
+            <p>End: <spam id="end" data-bind="text: EndCity" class="user-share-txt"></spam></p>
+            <p>Description: <spam id="activityText" data-bind="text: Text" class="user-share-txt"></spam></p>
+            <div id="map-canvas"></div>
         </div>
     </div>
 </div>
