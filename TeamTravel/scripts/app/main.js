@@ -89,7 +89,22 @@ var app = (function () {
     };
 
     var mobileApp = new kendo.mobile.Application(document.body, { transition: 'slide', layout: 'mobile-tabstrip' });
-
+        
+    var joinToRoute = function() {
+        //var userId = activity.get('UserId');
+        console.log("Here!");
+        /*var user = $.grep(usersModel.users(), function (e) {
+            return e.Id === userId;
+        })[0];
+        this.JoinedUsers = this.JoinedUsers || [];
+        this.JoinedUsers.push(user);
+        console.log(this.JoinedUsers);
+        var activities = app.viewModels.activities.activities;
+        activities.one('sync', function () {
+            app.mobileApp.navigate('#:back');
+        });
+        activities.sync();*/
+    };
     var usersModel = (function () {
         var currentUser = kendo.observable({ data: null });
         var usersData;
@@ -319,12 +334,14 @@ var app = (function () {
 
     // activity details view model
     var activityViewModel = (function () {
-        return {
-            show: function (e) {
-                var activity = activitiesModel.activities.getByUid(e.view.params.uid);
+        var activity;
+        var show = function (e) {
+                activity = activitiesModel.activities.getByUid(e.view.params.uid);
                 kendo.bind(e.view.element, activity, kendo.mobile.ui);
                 initializeRoute();
-            }
+            };
+        return {
+            show: show
         };
     }());
 
@@ -336,6 +353,7 @@ var app = (function () {
             activity: activityViewModel,
             usersModel: usersModel
         },
-        mobileApp: mobileApp
+        mobileApp: mobileApp,
+        joinToRoute: joinToRoute
     };
 }());
